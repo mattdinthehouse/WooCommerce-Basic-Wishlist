@@ -13,6 +13,8 @@ class WCBWL_Admin {
 		add_action('admin_post_wcbwl-create-default-pages', array($this, 'create_default_pages'), 10);
 
 		add_filter('woocommerce_settings_pages', array($this, 'insert_page_controls'), 10, 1);
+
+		add_filter('display_post_states', array($this, 'add_display_post_states'), 10, 2);
 	}
 
 	public function reminder_notices() {
@@ -48,8 +50,8 @@ class WCBWL_Admin {
 			array_slice($settings, 0, 3),
 			array(
 				array(
-					'title'    => __( 'Wishlist page', 'wcbwl' ),
-					'desc'     => sprintf( __( 'Page contents: [%s]', 'wcbwl' ), 'woocommerce_wishlist' ),
+					'title'    => __('Wishlist page', 'wcbwl'),
+					'desc'     => sprintf(__('Page contents: [%s]', 'wcbwl'), 'woocommerce_wishlist'),
 					'id'       => 'woocommerce_wishlist_page_id',
 					'type'     => 'single_select_page',
 					'default'  => '',
@@ -62,5 +64,13 @@ class WCBWL_Admin {
 		);
 
 		return $settings;
+	}
+
+	public function add_display_post_states($post_states, $post) {
+		if(wc_get_page_id('wishlist') === $post->ID) {
+			$post_states['wcbwl_page_for_wishlist'] = __('Wishlist Page', 'wcbwl');
+		}
+
+		return $post_states;
 	}
 }
