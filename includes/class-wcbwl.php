@@ -14,9 +14,11 @@ class WCBWL {
 
 	private function includes() {
 		require_once WCBWL_DIR.'/includes/class-wcbwl-admin.php';
+		require_once WCBWL_DIR.'/includes/class-wcbwl-frontend.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-setup.php';
 
-		$this->admin = new WCBWL_Admin();
+		$this->admin    = new WCBWL_Admin();
+		$this->frontend = new WCBWL_Frontend();
 	}
 
 	private function hooks() {
