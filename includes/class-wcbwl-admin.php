@@ -9,6 +9,10 @@ class WCBWL_Admin {
 		add_action('all_admin_notices', array($this, 'reminder_notices'), 10);
 
 		add_filter('wcbwl_reminder_notices', array($this, 'create_pages_reminder_notice'), 10);
+
+		add_action('admin_post_wcbwl-create-default-pages', array($this, 'create_default_pages'), 10);
+
+		add_filter('woocommerce_settings_pages', array($this, 'insert_page_controls'), 10, 1);
 	}
 
 	public function reminder_notices() {
@@ -21,8 +25,8 @@ class WCBWL_Admin {
 
 	public function create_pages_reminder_notice($notices) {
 		if(wc_get_page_id('wishlist') <= 0) {
-			$review_settings_url = '#';
-			$create_default_url  = '#';
+			$review_settings_url = esc_html(admin_url('admin.php?page=wc-settings&tab=advanced'));
+			$create_default_url  = esc_html(admin_url('admin-post.php?action=wcbwl-create-default-pages'));
 
 			$notices[] = array(
 				'type'    => 'warning',
@@ -31,5 +35,32 @@ class WCBWL_Admin {
 		}
 
 		return $notices;
+	}
+
+	public function create_default_pages() {
+		WCBWL_Setup::create_pages();
+
+		wp_safe_redirect(admin_url('admin.php?page=wc-settings&tab=advanced'));
+	}
+
+	public function insert_page_controls($settings) {
+		$settings = array_merge(
+			array_slice($settings, 0, 3),
+			array(
+				array(
+					'title'    => __( 'Wishlist page', 'wcbwl' ),
+					'desc'     => sprintf( __( 'Page contents: [%s]', 'wcbwl' ), 'woocommerce_wishlist' ),
+					'id'       => 'woocommerce_wishlist_page_id',
+					'type'     => 'single_select_page',
+					'default'  => '',
+					'class'    => 'wc-enhanced-select-nostd',
+					'css'      => 'min-width:300px;',
+					'desc_tip' => true,
+				),
+			),
+			array_slice($settings, 3)
+		);
+
+		return $settings;
 	}
 }
