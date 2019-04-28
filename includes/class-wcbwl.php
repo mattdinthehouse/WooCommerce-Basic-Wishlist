@@ -14,6 +14,7 @@ class WCBWL {
 
 	private function includes() {
 		require_once WCBWL_DIR.'/includes/class-wcbwl-admin.php';
+		require_once WCBWL_DIR.'/includes/class-wcbwl-form-handler.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-frontend.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-setup.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-wishlist-item.php';
@@ -21,6 +22,8 @@ class WCBWL {
 
 		$this->admin    = new WCBWL_Admin();
 		$this->frontend = new WCBWL_Frontend();
+
+		WCBWL_Form_Handler::init();
 	}
 
 	private function hooks() {
@@ -35,5 +38,16 @@ class WCBWL {
 		$data_stores['wishlist-item'] = 'WCBWL_Wishlist_Item_Data_Store';
 
 		return $data_stores;
+	}
+
+	public function save_to_wishlist($product_id, $wishlist_id = 0) {
+		// TODO: Check if a wishlist already has this product
+		
+		$item = new WCBWL_Wishlist_Item();
+		$item->set_product_id($product_id);
+		$item->set_date_added(current_time('mysql'));
+		$item->save();
+
+		return true;
 	}
 }
