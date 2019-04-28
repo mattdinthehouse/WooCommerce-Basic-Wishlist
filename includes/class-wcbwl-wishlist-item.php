@@ -13,9 +13,11 @@ class WCBWL_Wishlist_Item extends WC_Data {
 
 	protected $cache_group = 'wishlist-items';
 
+	protected $data_store_name = 'wishlist-item';
+
 	protected $meta_group = 'wishlist_item';
 
-	protected $object_group = 'wishlist_item';
+	protected $object_type = 'wishlist_item';
 
 	/**
 	 * Constructor.

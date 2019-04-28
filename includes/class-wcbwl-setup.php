@@ -13,6 +13,7 @@ class WCBWL_Setup {
 		self::create_tables();
 
 		self::register_post_types();
+		self::register_post_status();
 
 		flush_rewrite_rules();
 	}
@@ -127,5 +128,33 @@ CREATE TABLE {$wpdb->prefix}woocommerce_wishlist_itemmeta (
 		);
 
 		do_action('wcbwl_after_register_post_type');
+	}
+
+	public static function register_post_status() {
+		$wishlist_statuses = apply_filters(
+			'wcbwl_register_wishlist_post_statuses',
+			array(
+				'wcbwl-active' => array(
+					'label'                     => _x('Active', 'Wishlist status', 'wcbwl'),
+					'public'                    => true,
+					'exclude_from_search'       => true,
+					'show_in_admin_all_list'    => true,
+					'show_in_admin_status_list' => true,
+					'label_count'               => _n_noop('Active <span class="count">(%s)</span>', 'Active <span class="count">(%s)</span>', 'wcbwl'),
+				),
+				'wcbwl-inactive' => array(
+					'label'                     => _x('Inactive', 'Wishlist status', 'wcbwl'),
+					'public'                    => true,
+					'exclude_from_search'       => true,
+					'show_in_admin_all_list'    => true,
+					'show_in_admin_status_list' => true,
+					'label_count'               => _n_noop('Inactive <span class="count">(%s)</span>', 'Inactive <span class="count">(%s)</span>', 'wcbwl'),
+				),
+			)
+		);
+
+		foreach($wishlist_statuses as $wishlist_status => $values) {
+			register_post_status($wishlist_status, $values);
+		}
 	}
 }

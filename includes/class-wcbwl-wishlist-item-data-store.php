@@ -33,7 +33,7 @@ class WCBWL_Wishlist_Item_Data_Store extends WC_Data_Store_WP implements WC_Obje
 
 		$changes = $item->get_changes();
 
-		if(array_intersect(array('wishlist', 'product_id', 'date_added'), array_keys($changes))) {
+		if(array_intersect(array('wishlist_id', 'product_id', 'date_added'), array_keys($changes))) {
 			$wpdb->update(
 				$wpdb->prefix.'woocommerce_wishlist_items', array(
 				'wishlist_id'    => $item->get_wishlist_id('edit'),
