@@ -166,7 +166,6 @@ class WCBWL_Wishlist_Data_Store_CPT extends WC_Data_Store_WP implements WC_Objec
 
 		// Get from cache if available.
 		$items = 0 < $wishlist->get_id() ? wp_cache_get('wishlist-items-'.$wishlist->get_id(), 'wishlists') : false;
-		$items = false;
 
 		if(false === $items) {
 			$items = $wpdb->get_results(
@@ -191,6 +190,8 @@ class WCBWL_Wishlist_Data_Store_CPT extends WC_Data_Store_WP implements WC_Objec
 
 	protected function get_item($data) {
 		$item = new WCBWL_Wishlist_Item();
+		$item->set_defaults();
+		$item->set_id($data->wishlist_item_id);
 		$item->set_props(
 			array(
 				'wishlist_id' => $data->wishlist_id,
@@ -198,6 +199,7 @@ class WCBWL_Wishlist_Data_Store_CPT extends WC_Data_Store_WP implements WC_Objec
 				'date_added'  => 0 < $data->date_added_gmt ? wc_string_to_timestamp($data->date_added_gmt) : null,
 			)
 		);
+		$item->read_meta_data();
 		$item->set_object_read(true);
 
 		return $item;
