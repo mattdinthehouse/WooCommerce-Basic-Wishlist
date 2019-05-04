@@ -47,11 +47,18 @@ class WCBWL {
 		return $data_stores;
 	}
 
-	public function save_to_wishlist($product_id, $wishlist_id = 0) {
+	public function save_to_wishlist($product_id, $item_data = array()) {
 		$item = new WCBWL_Wishlist_Item();
 		$item->set_product_id($product_id);
-		$item->set_date_added(current_time('mysql'));
+
+		$item_data = (array) apply_filters('wcbwl_save_to_wishlist_item_data', $item_data, $product_id);
+		foreach($item_data as $key => $value) {
+			$item->update_meta_data($key, $value);
+		}
+
 		$item->save();
+
+		do_action('wcbwl_save_to_wishlist', $item, $product_id, $item_data);
 
 		return true;
 	}

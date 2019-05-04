@@ -7,6 +7,12 @@ class WCBWL_Form_Handler {
 
 	public static function init() {
 		add_action('wp_loaded', array(__CLASS__, 'save_to_wishlist_action'), 20);
+
+		add_filter('woocommerce_add_to_cart_product_id', array(__CLASS__, 'stop_variable_add_to_cart'), 10, 1);
+
+		add_filter('wcbwl_save_to_wishlist_product_id', array(__CLASS__, 'handle_variation_save_to_wishlist'), 10, 1);
+
+		add_filter('wcbwl_save_to_wishlist_item_data', array(__CLASS__, 'add_variable_product_wishlist_item_data'), 10, 2);
 	}
 
 	public static function save_to_wishlist_action() {
@@ -40,5 +46,46 @@ class WCBWL_Form_Handler {
 				exit;
 			}
 		}
+	}
+
+	public static function stop_variable_add_to_cart($product_id) {
+		if(isset($_REQUEST['save-to-wishlist'])) {
+			$product_id = -1;
+		}
+
+		return $product_id;
+	}
+
+	public static function handle_variation_save_to_wishlist($product_id) {
+		if(isset($_REQUEST['variation_id']) && is_numeric($_REQUEST['variation_id'])) {
+			$variation_id = absint(wp_unslash($_REQUEST['variation_id']));
+
+			if(get_post_type($variation_id) == 'product_variation') {
+				$product_id = $variation_id;
+			}
+		}
+
+		return $product_id;
+	}
+
+	public static function add_variable_product_wishlist_item_data($item_data, $product_id) {
+		$product = wc_get_product($product_id);
+
+		if($product->is_type('variable', 'variation')) {
+			$attribute_data = array();
+
+			foreach($product->get_variation_attributes() as $name => $values) {
+				$key = sanitize_title($name);
+				$key = (strpos($key, 'attribute_') === 0 ? $key : 'attribute_'.$key);
+
+				if(isset($_REQUEST[$key]) && in_array($_REQUEST[$key], $values, true)) {
+					$attribute_data[$key] = $_REQUEST[$key];
+				}
+			}
+
+			$item_data = array_merge($item_data, $attribute_data);
+		}
+
+		return $item_data;
 	}
 }
