@@ -47,18 +47,28 @@ class WCBWL {
 		return $data_stores;
 	}
 
-	public function save_to_wishlist($product_id, $item_data = array()) {
+	public function save_to_wishlist($product_id, $wishlist_id = 0, $item_data = array()) {
+		$wishlist = ($wishlist_id ? new WCBWL_Wishlist($wishlist_id) : $this->get_wishlist_from_session());
+		if(!$wishlist->get_id()) {
+			WCBWL_Wishlist::populate_defaults($wishlist);
+		}
+
 		$item = new WCBWL_Wishlist_Item();
 		$item->set_product_id($product_id);
 
-		$item_data = (array) apply_filters('wcbwl_save_to_wishlist_item_data', $item_data, $product_id);
+		$item_data = (array) apply_filters('wcbwl_save_to_wishlist_item_data', $item_data, $product_id, $wishlist);
 		foreach($item_data as $key => $value) {
 			$item->update_meta_data($key, $value);
 		}
 
 		$item->save();
 
-		do_action('wcbwl_save_to_wishlist', $item, $product_id, $item_data);
+		do_action('wcbwl_save_to_wishlist', $item, $product_id, $wishlist, $item_data);
+
+		$wishlist->add_item($item);
+
+		$wishlist->save();
+		WC()->session->set('wishlist', $wishlist->get_id());
 
 		return true;
 	}
@@ -74,5 +84,11 @@ class WCBWL {
 		);
 		
 		return apply_filters('wcbwl_wishlist_statuses', $wishlist_statuses);
+	}
+
+	public function get_wishlist_from_session() {
+		$wishlist_id = WC()->session->get('wishlist');
+
+		return new WCBWL_Wishlist($wishlist_id);
 	}
 }

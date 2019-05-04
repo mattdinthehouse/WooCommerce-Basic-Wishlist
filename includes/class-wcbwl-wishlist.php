@@ -244,4 +244,25 @@ class WCBWL_Wishlist extends WC_Data {
 			$this->items['new:'.count($this->items)] = $item;
 		}
 	}
+
+	public function is_empty() {
+		return empty($this->get_items());
+	}
+
+	public static function populate_defaults($wishlist = null) {
+		$wishlist = ($wishlist ? $wishlist : new self());
+
+		$wishlist->set_status('active');
+		$wishlist->set_customer_id(get_current_user());
+
+		if(!empty($_SERVER['REMOTE_ADDR'])) {
+			$wishlist->set_customer_ip_address($_SERVER['REMOTE_ADDR']);
+		}
+
+		if(!empty($_SERVER['HTTP_USER_AGENT'])) {
+			$wishlist->set_customer_user_agent($_SERVER['HTTP_USER_AGENT']);
+		}
+
+		return $wishlist;
+	}
 }

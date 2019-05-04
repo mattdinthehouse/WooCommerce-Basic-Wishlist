@@ -129,7 +129,9 @@ class WCBWL_Wishlist_Data_Store_CPT extends WC_Data_Store_WP implements WC_Objec
 
 		$wishlist->set_props(
 			array(
-				'version' => get_post_meta($id, '_wishlist_version', true),
+				'customer_ip_address' => get_post_meta($id, '_customer_ip_address', true),
+				'customer_user_agent' => get_post_meta($id, '_customer_user_agent', true),
+				'version'             => get_post_meta($id, '_wishlist_version', true),
 			)
 		);
 	}
@@ -137,7 +139,9 @@ class WCBWL_Wishlist_Data_Store_CPT extends WC_Data_Store_WP implements WC_Objec
 	protected function update_post_meta(&$wishlist) {
 		$updated_props     = array();
 		$meta_key_to_props = array(
-			'_wishlist_version' => 'version',
+			'_customer_ip_address' => 'customer_ip_address',
+			'_customer_user_agent' => 'customer_user_agent',
+			'_wishlist_version'    => 'version',
 		);
 
 		$props_to_update = $this->get_props_to_update($wishlist, $meta_key_to_props);
