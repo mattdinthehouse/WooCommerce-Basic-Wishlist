@@ -12,6 +12,10 @@ class WCBWL_Wishlist_Item_Data_Store extends WC_Data_Store_WP implements WC_Obje
 	public function create(&$item) {
 		global $wpdb;
 
+		if(null === $item->get_date_added('edit')) {
+			$item->set_date_added(current_time('timestamp', true));
+		}
+
 		$wpdb->insert(
 			$wpdb->prefix.'woocommerce_wishlist_items', array(
 				'wishlist_id'    => $item->get_wishlist_id('edit'),
@@ -30,6 +34,10 @@ class WCBWL_Wishlist_Item_Data_Store extends WC_Data_Store_WP implements WC_Obje
 
 	public function update(&$item) {
 		global $wpdb;
+
+		if(null === $item->get_date_added('edit')) {
+			$item->set_date_added(current_time('timestamp', true));
+		}
 
 		$changes = $item->get_changes();
 
