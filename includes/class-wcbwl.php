@@ -17,6 +17,7 @@ class WCBWL {
 		require_once WCBWL_DIR.'/includes/class-wcbwl-form-handler.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-frontend.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-setup.php';
+		require_once WCBWL_DIR.'/includes/class-wcbwl-shortcodes.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-wishlist.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-wishlist-data-store-cpt.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-wishlist-item.php';
@@ -33,6 +34,7 @@ class WCBWL {
 
 		add_action('init', array('WCBWL_Setup', 'register_post_types'), 5);
 		add_action('init', array('WCBWL_Setup', 'register_post_status'), 9);
+		add_action('init', array('WCBWL_Shortcodes', 'init'), 10);
 
 		add_action('init', array('WCBWL_Setup', 'wpdb_table_fix'), 0);
 		add_action('switch_blog', array('WCBWL_Setup', 'wpdb_table_fix'), 0);

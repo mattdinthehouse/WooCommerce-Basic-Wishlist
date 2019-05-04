@@ -119,7 +119,7 @@ CREATE TABLE {$wpdb->prefix}woocommerce_wishlist_itemmeta (
 						'feeds'      => true,
 					),
 					'query_var'           => true,
-					'supports'            => array( 'title' ),
+					'supports'            => array('title'),
 					'has_archive'         => false,
 					'show_in_nav_menus'   => false,
 					'show_in_rest'        => true,

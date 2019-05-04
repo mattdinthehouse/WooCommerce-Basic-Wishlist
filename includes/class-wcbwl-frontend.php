@@ -18,6 +18,9 @@ class WCBWL_Frontend {
 		add_action('wcbwl_variable_save_to_wishlist', 'wcbwl_submit_save_to_wishlist', 10);
 		add_action('wcbwl_external_save_to_wishlist', 'wcbwl_link_save_to_wishlist', 10);
 		add_action('wcbwl_grouped_save_to_wishlist', 'wcbwl_link_save_to_wishlist', 10);
+
+		add_action('wcbwl_wishlist_is_empty', 'wcbwl_empty_wishlist_message', 10);
+		add_action('wcbwl_wishlist_is_empty', 'woocommerce_output_all_notices', 5);
 	}
 
 	public function locate_template($template, $template_name, $template_path) {

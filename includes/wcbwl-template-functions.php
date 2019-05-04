@@ -81,3 +81,10 @@ if(!function_exists('wcbwl_link_save_to_wishlist')) {
 		wc_get_template('single-product/save-to-wishlist/link.php', $args);
 	}
 }
+
+if(!function_exists('wcbwl_empty_wishlist_message')) {
+
+	function wcbwl_empty_wishlist_message() {
+		echo '<p class="cart-empty wishlist-empty">'.wp_kses_post(apply_filters('wcbwl_empty_wishlist_message', __('Your wishlist is currently empty.', 'wcbwl'))).'</p>';
+	}
+}
