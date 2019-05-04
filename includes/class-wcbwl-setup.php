@@ -157,4 +157,11 @@ CREATE TABLE {$wpdb->prefix}woocommerce_wishlist_itemmeta (
 			register_post_status($wishlist_status, $values);
 		}
 	}
+
+	public static function wpdb_table_fix() {
+		global $wpdb;
+
+		$wpdb->wishlist_itemmeta = $wpdb->prefix.'woocommerce_wishlist_itemmeta';
+		$wpdb->tables[]          = 'woocommerce_wishlist_itemmeta';
+	}
 }
