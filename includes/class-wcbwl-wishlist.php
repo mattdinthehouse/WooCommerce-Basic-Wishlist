@@ -249,11 +249,11 @@ class WCBWL_Wishlist extends WC_Data {
 		return empty($this->get_items());
 	}
 
-	public static function populate_defaults($wishlist = null) {
+	public static function populate_defaults($wishlist = null, $user_id = 0) {
 		$wishlist = ($wishlist ? $wishlist : new self());
 
 		$wishlist->set_status('active');
-		$wishlist->set_customer_id(get_current_user());
+		$wishlist->set_customer_id($user_id ? $user_id : get_current_user_id());
 
 		if(!empty($_SERVER['REMOTE_ADDR'])) {
 			$wishlist->set_customer_ip_address($_SERVER['REMOTE_ADDR']);
