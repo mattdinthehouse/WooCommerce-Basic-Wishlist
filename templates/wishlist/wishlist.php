@@ -67,7 +67,7 @@ do_action('wcbwl_before_wishlist');
 
 								do_action('wcbwl_after_wishlist_item_name', $wishlist_item);
 
-								//echo wcbwl_get_formatted_wishlist_item_data($wishlist_item);
+								echo wcbwl_get_formatted_wishlist_item_data($wishlist_item);
 							?>
 						</td>
 
