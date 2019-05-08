@@ -16,7 +16,7 @@ echo apply_filters('woocommerce_loop_save_to_wishlist_link',
 	sprintf('<a href="%s" data-product_id="%s" class="%s">%s</a>',
 		esc_url(add_query_arg('save-to-wishlist', $args['product_id'])),
 		esc_attr(isset($args['product_id']) ? $args['product_id'] : get_the_id()),
-		esc_attr(isset($args['class']) ? $args['class'] : 'button' ),
+		esc_attr(isset($args['class']) ? $args['class'] : 'button'),
 		esc_html($args['save_to_wishlist_text'])
 	),
 $args);

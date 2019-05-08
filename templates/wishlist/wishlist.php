@@ -27,7 +27,7 @@ do_action('wcbwl_before_wishlist');
 
 			<?php
 
-				foreach($wishlist->get_items() as $wishlist_item ) {
+				foreach($wishlist->get_items() as $wishlist_item) {
 					$product_id        = apply_filters('wcbwl_wishlist_item_product_id', $wishlist_item->get_product_id(), $wishlist_item);
 					$_product          = apply_filters('wcbwl_wishlist_item_product', wc_get_product($product_id), $wishlist_item);
 					$product_permalink = apply_filters('wcbwl_wishlist_item_permalink', get_permalink($product_id), $wishlist_item);

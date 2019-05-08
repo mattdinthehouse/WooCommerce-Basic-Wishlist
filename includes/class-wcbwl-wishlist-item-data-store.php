@@ -101,6 +101,6 @@ class WCBWL_Wishlist_Item_Data_Store extends WC_Data_Store_WP implements WC_Obje
 	public function clear_cache(&$item) {
 		wp_cache_delete('item-'.$item->get_id(), 'wishlist-items');
 		wp_cache_delete('wishlist-items-'.$item->get_wishlist_id(), 'wishlists');
-		wp_cache_delete($item->get_id(), $this->meta_type.'_meta' );
+		wp_cache_delete($item->get_id(), $this->meta_type.'_meta');
 	}
 }

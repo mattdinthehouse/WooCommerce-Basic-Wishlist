@@ -14,7 +14,7 @@ if(!function_exists('wcbwl_template_loop_save_to_wishlist')) {
 					array(
 						'button',
 						'save_to_wishlist_button',
-						//$product->supports( 'ajax_add_to_cart' ) && $product->is_purchasable() && $product->is_in_stock() ? 'ajax_add_to_cart' : '',
+						//$product->supports('ajax_add_to_cart') && $product->is_purchasable() && $product->is_in_stock() ? 'ajax_add_to_cart' : '',
 					)
 				)
 			),
@@ -101,15 +101,15 @@ if(!function_exists('wcbwl_get_formatted_wishlist_item_data')) {
 			$label = $meta->key;
 			$value = $meta->value;
 
-			$taxonomy = wc_attribute_taxonomy_name( str_replace( 'attribute_pa_', '', urldecode( $label ) ) );
+			$taxonomy = wc_attribute_taxonomy_name(str_replace('attribute_pa_', '', urldecode($label)));
 
-			if ( taxonomy_exists( $taxonomy ) ) {
+			if(taxonomy_exists($taxonomy)) {
 				// If this is a term slug, get the term's nice name.
-				$term = get_term_by( 'slug', $value, $taxonomy );
-				if ( ! is_wp_error( $term ) && $term && $term->name ) {
+				$term = get_term_by('slug', $value, $taxonomy);
+				if(!is_wp_error($term) && $term && $term->name) {
 					$value = $term->name;
 				}
-				$label = wc_attribute_label( $taxonomy );
+				$label = wc_attribute_label($taxonomy);
 			} else {
 				// If this is a custom option slug, get the options name.
 				$value = apply_filters('woocommerce_variation_option_name', $value, null, $taxonomy, $product);
@@ -133,24 +133,24 @@ if(!function_exists('wcbwl_get_formatted_wishlist_item_data')) {
 		// Format item data ready to display.
 		foreach($item_data as $key => $data) {
 			// Set hidden to true to not display meta on cart.
-			if ( ! empty( $data['hidden'] ) ) {
-				unset( $item_data[ $key ] );
+			if(!empty($data['hidden'])) {
+				unset($item_data[$key]);
 				continue;
 			}
-			$item_data[ $key ]['key']     = ! empty( $data['key'] ) ? $data['key'] : $data['name'];
-			$item_data[ $key ]['display'] = ! empty( $data['display'] ) ? $data['display'] : $data['value'];
+			$item_data[$key]['key']     = !empty($data['key']) ? $data['key'] : $data['name'];
+			$item_data[$key]['display'] = !empty($data['display']) ? $data['display'] : $data['value'];
 		}
 
 		// Output flat or in list format.
-		if ( count( $item_data ) > 0 ) {
+		if(count($item_data) > 0) {
 			ob_start();
 
-			if ( $flat ) {
-				foreach ( $item_data as $data ) {
-					echo esc_html( $data['key'] ) . ': ' . wp_kses_post( $data['display'] ) . "\n";
+			if($flat) {
+				foreach($item_data as $data) {
+					echo esc_html($data['key']) . ': ' . wp_kses_post($data['display']) . "\n";
 				}
 			} else {
-				wc_get_template( 'wishlist/wishlist-item-data.php', array( 'item_data' => $item_data ) );
+				wc_get_template('wishlist/wishlist-item-data.php', array('item_data' => $item_data));
 			}
 
 			return ob_get_clean();

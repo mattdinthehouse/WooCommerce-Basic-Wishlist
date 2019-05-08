@@ -147,11 +147,11 @@ class WCBWL_Wishlist extends WC_Data {
 		return $this->get_prop('customer_id', $context);
 	}
 
-	public function get_customer_ip_address( $context = 'view' ) {
+	public function get_customer_ip_address($context = 'view') {
 		return $this->get_prop('customer_ip_address', $context);
 	}
 
-	public function get_customer_user_agent( $context = 'view' ) {
+	public function get_customer_user_agent($context = 'view') {
 		return $this->get_prop('customer_user_agent', $context);
 	}
 
@@ -202,11 +202,11 @@ class WCBWL_Wishlist extends WC_Data {
 		$this->set_prop('customer_id', absint($value));
 	}
 
-	public function set_customer_ip_address( $value ) {
+	public function set_customer_ip_address($value) {
 		$this->set_prop('customer_ip_address', $value);
 	}
 
-	public function set_customer_user_agent( $value ) {
+	public function set_customer_user_agent($value) {
 		$this->set_prop('customer_user_agent', $value);
 	}
 

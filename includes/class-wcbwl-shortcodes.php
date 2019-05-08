@@ -10,7 +10,7 @@ class WCBWL_Shortcodes {
 			'woocommerce_wishlist' => __CLASS__.'::wishlist',
 		);
 
-		foreach ( $shortcodes as $shortcode => $function ) {
+		foreach($shortcodes as $shortcode => $function) {
 			add_shortcode(apply_filters("{$shortcode}_shortcode_tag", $shortcode), $function);
 		}
 	}
@@ -39,7 +39,7 @@ class WCBWL_Shortcodes {
 			'wishlist' => $wishlist,
 		);
 
-		if($wishlist->is_empty() ) {
+		if($wishlist->is_empty()) {
 			wc_get_template('wishlist/wishlist-empty.php', $args);
 		}
 		else {
