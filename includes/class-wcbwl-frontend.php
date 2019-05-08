@@ -10,6 +10,8 @@ class WCBWL_Frontend {
 
 		add_action('after_setup_theme', array($this, 'include_template_functions'), 12);
 
+		add_action('pre_get_posts', array($this, 'route_wishlist_post_to_page'), 10, 1);
+
 		add_action('woocommerce_after_shop_loop_item', 'wcbwl_template_loop_save_to_wishlist', 10);
 
 		add_action('woocommerce_after_add_to_cart_button', 'wcbwl_template_single_save_to_wishlist', 10);
@@ -37,5 +39,13 @@ class WCBWL_Frontend {
 
 	public function include_template_functions() {
 		require_once WCBWL_DIR.'/includes/wcbwl-template-functions.php';
+	}
+
+	public function route_wishlist_post_to_page($query) {
+		if($query->is_main_query() && $query->get('post_type') == 'wishlist') {
+			$query->set('post_type', 'page');
+			$query->set('p', wc_get_page_id('wishlist'));
+			$query->set('name', '');
+		}
 	}
 }

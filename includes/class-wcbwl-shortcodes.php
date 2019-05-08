@@ -22,8 +22,9 @@ class WCBWL_Shortcodes {
 	public static function wishlist_output() {
 		$wishlist = false;
 
-		if(is_singular('wishlist')) {
-			$wishlist = new WCBWL_Wishlist(get_the_id());
+		$wishlist_key = get_query_var('wishlist');
+		if($wishlist_key) {
+			$wishlist = WCBWL_Wishlist::get_using_key($wishlist_key);
 		}
 		else {
 			$wishlist = WC()->wishlist->get_wishlist_from_current_user();

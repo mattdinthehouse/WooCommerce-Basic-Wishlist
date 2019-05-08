@@ -60,6 +60,24 @@ class WCBWL_Wishlist extends WC_Data {
 	|--------------------------------------------------------------------------
 	*/
 
+	public static function get_using_key($key) {
+		$wishlist_id = 0;
+
+		$wishlists = get_posts(array(
+			'fields'         => 'ids',
+			'posts_per_page' => 1,
+			'post_type'      => 'wishlist',
+			'post_status'    => 'any',
+			'name'           => $key,
+		));
+
+		if(!empty($wishlists)) {
+			$wishlist_id = current($wishlists);
+		}
+
+		return new self($wishlist_id);
+	}
+
 	public function save() {
 		if($this->data_store) {
 			// Trigger action before saving to the DB. Allows you to adjust object props before save.

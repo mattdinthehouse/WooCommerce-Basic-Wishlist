@@ -137,7 +137,6 @@ CREATE TABLE {$wpdb->prefix}woocommerce_wishlist_itemmeta (
 				'wcbwl-active' => array(
 					'label'                     => _x('Active', 'Wishlist status', 'wcbwl'),
 					'public'                    => true,
-					'exclude_from_search'       => true,
 					'show_in_admin_all_list'    => true,
 					'show_in_admin_status_list' => true,
 					'label_count'               => _n_noop('Active <span class="count">(%s)</span>', 'Active <span class="count">(%s)</span>', 'wcbwl'),
@@ -145,7 +144,6 @@ CREATE TABLE {$wpdb->prefix}woocommerce_wishlist_itemmeta (
 				'wcbwl-inactive' => array(
 					'label'                     => _x('Inactive', 'Wishlist status', 'wcbwl'),
 					'public'                    => true,
-					'exclude_from_search'       => true,
 					'show_in_admin_all_list'    => true,
 					'show_in_admin_status_list' => true,
 					'label_count'               => _n_noop('Inactive <span class="count">(%s)</span>', 'Inactive <span class="count">(%s)</span>', 'wcbwl'),
