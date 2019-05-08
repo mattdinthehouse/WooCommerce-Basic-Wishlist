@@ -163,7 +163,7 @@ class WCBWL_Wishlist extends WC_Data {
 		if(true === $this->object_read) {
 			// Only allow valid new status.
 			if(!in_array('wcbwl-'.$new_status, $this->get_valid_statuses(), true) && 'trash' !== $new_status) {
-				$new_status = 'wcbwl-inactive';
+				$new_status = 'inactive';
 			}
 
 			// If the old status is set but unknown (e.g. draft) assume its pending for action usage.

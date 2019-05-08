@@ -26,7 +26,7 @@ class WCBWL_Shortcodes {
 			$wishlist = new WCBWL_Wishlist(get_the_id());
 		}
 		else {
-			$wishlist = WC()->wishlist->get_wishlist_for_user();
+			$wishlist = WC()->wishlist->get_wishlist_from_current_user();
 		}
 
 		$wishlist = apply_filters('wcbwl_wishlist_shortcode_object', $wishlist);

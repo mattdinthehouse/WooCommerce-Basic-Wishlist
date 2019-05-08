@@ -20,7 +20,7 @@ class WCBWL_Wishlist_Data_Store_CPT extends WC_Data_Store_WP implements WC_Objec
 					'post_date'     => gmdate('Y-m-d H:i:s', $wishlist->get_date_created('edit')->getOffsetTimestamp()),
 					'post_date_gmt' => gmdate('Y-m-d H:i:s', $wishlist->get_date_created('edit')->getTimestamp()),
 					'post_type'     => 'wishlist',
-					'post_status'   => $wishlist->get_status(),
+					'post_status'   => 'wcbwl-'.$wishlist->get_status(),
 					'ping_status'   => 'closed',
 					'post_author'   => $wishlist->get_customer_id(),
 					'post_title'    => sprintf(__('Wishlist &ndash; %s', 'wcbwl'), strftime(_x('%b %d, %Y @ %I:%M %p', 'Order date parsed by strftime', 'wbcwl'))),

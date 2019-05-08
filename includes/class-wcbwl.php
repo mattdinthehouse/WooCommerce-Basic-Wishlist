@@ -52,7 +52,7 @@ class WCBWL {
 	}
 
 	public function save_to_wishlist($product_id, $wishlist_id = 0, $item_data = array()) {
-		$wishlist = ($wishlist_id ? new WCBWL_Wishlist($wishlist_id) : $this->get_wishlist_for_user());
+		$wishlist = ($wishlist_id ? new WCBWL_Wishlist($wishlist_id) : $this->get_wishlist_from_current_user());
 		if(!$wishlist->get_id()) {
 			WCBWL_Wishlist::populate_defaults($wishlist);
 		}
@@ -92,41 +92,63 @@ class WCBWL {
 		return apply_filters('wcbwl_wishlist_statuses', $wishlist_statuses);
 	}
 
-	public function get_wishlist_for_user($user_id = 0) {
+	public function get_wishlist_from_current_user() {
+		if(is_user_logged_in()) {
+			return $this->get_wishlist_for_user(get_current_user_id());
+		}
+		else {
+			return $this->get_wishlist_from_session();
+		}
+	}
+
+	public function get_wishlist_for_user($user_id) {
 		$wishlist_id = 0;
 
-		if(!$user_id && is_user_logged_in()) {
-			$user_id = get_current_user_id();
-		}
+		$wishlists = get_posts(array(
+			'fields'         => 'ids',
+			'posts_per_page' => 1,
+			'post_type'      => 'wishlist',
+			'post_status'    => 'wcbwl-active',
+			'author'         => $user_id,
+		));
 
-		if(!$user_id) {
-			$wishlist_id = WC()->session->get('wishlist', 0);
-		}
-
-		if($user_id) {
-			$wishlists = get_posts(array(
-				'fields'         => 'ids',
-				'posts_per_page' => 1,
-				'post_type'      => 'wishlist',
-				'post_status'    => 'any',
-				'post_author'    => $user_id,
-			));
-
-			if(!empty($wishlists)) {
-				$wishlist_id = current($wishlists);
-			}
+		if(!empty($wishlists)) {
+			$wishlist_id = current($wishlists);
 		}
 
 		return new WCBWL_Wishlist($wishlist_id);
 	}
 
-	public function update_wishlist_from_session($user_login, $user) {
+	public function get_wishlist_from_session() {
 		$wishlist_id = WC()->session->get('wishlist', 0);
 
-		if($wishlist_id) {
-			$wishlist = new WCBWL_Wishlist($wishlist_id);
-			WCBWL_Wishlist::populate_defaults($wishlist, $user->ID);
-			$wishlist->save();
+		return new WCBWL_Wishlist($wishlist_id);
+	}
+
+	public function update_wishlist_from_session($user_login, $user) {
+		$session_wishlist = $this->get_wishlist_from_session();
+
+		if($session_wishlist->get_id()) {
+			$user_wishlist = $this->get_wishlist_for_user($user->ID);
+
+			if(!$user_wishlist->get_id()) {
+				// This is the user's first wishlist.
+				WCBWL_Wishlist::populate_defaults($session_wishlist, $user->ID);
+
+				$session_wishlist->save();
+			}
+
+			if($session_wishlist->get_id() != $user_wishlist->get_id()) {
+				// User already has a wishlist, merge the session wishlist into it.
+				WCBWL_Wishlist::populate_defaults($user_wishlist, $user->ID);
+
+				foreach($session_wishlist->get_items() as $item) {
+					$user_wishlist->add_item($item);
+				}
+
+				$user_wishlist->save();
+				$session_wishlist->delete();
+			}
 		}
 	}
 }
