@@ -81,4 +81,35 @@ class WCBWL_Wishlist_Item extends WC_Data {
 	public function set_date_added($date = null) {
 		$this->set_date_prop('date_added', $date);
 	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| Non-CRUD Getters
+	|--------------------------------------------------------------------------
+	*/
+
+	public function generate_hash() {
+		$elements = array(
+			'product_id:'.$this->get_product_id(),
+		);
+
+		foreach($this->get_meta_data() as $meta) {
+			$value = $meta->value;
+
+			if(is_array($value) || is_object($value)) {
+				$value = (array) $value;
+				ksort($value);
+				$value = json_encode($value);
+			}
+
+			$elements[] = $meta->key.':'.$value;
+		}
+
+		sort($elements);
+
+		$hash = implode($elements);
+		$hash = md5($hash);
+
+		return $hash;
+	}
 }

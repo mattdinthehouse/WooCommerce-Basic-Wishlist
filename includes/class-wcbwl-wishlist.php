@@ -214,10 +214,8 @@ class WCBWL_Wishlist extends WC_Data {
 		return apply_filters('wcbwl_wishlist_get_items', $this->items, $this);
 	}
 
-	public function get_item($item_id, $load_from_db = true) {
-		if($load_from_db) {
-			$this->get_items();
-		}
+	public function get_item($item_id) {
+		$this->get_items();
 
 		return (!empty($this->items[$item_id]) ? $this->items[$item_id] : false);
 	}
@@ -230,7 +228,14 @@ class WCBWL_Wishlist extends WC_Data {
 
 	public function add_item($item) {
 		// Make sure existing items are loaded so we can append this new one.
-		$this->get_items();
+		$items = $this->get_items();
+
+		// Bail early if an equivalent item is already in there.
+		foreach($items as $known_item) {
+			if($known_item->generate_hash() == $item->generate_hash()) {
+				return;
+			}
+		}
 
 		// Set parent.
 		$item->set_wishlist_id($this->get_id());
