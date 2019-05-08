@@ -233,7 +233,7 @@ class WCBWL_Wishlist extends WC_Data {
 		// Bail early if an equivalent item is already in there.
 		foreach($items as $known_item) {
 			if($known_item->generate_hash() == $item->generate_hash()) {
-				return;
+				return new WP_Error('item_already_exists', 'An equivalent item already exists in this wishlist');
 			}
 		}
 
@@ -248,6 +248,8 @@ class WCBWL_Wishlist extends WC_Data {
 		} else {
 			$this->items['new:'.count($this->items)] = $item;
 		}
+
+		return true;
 	}
 
 	public function is_empty() {
