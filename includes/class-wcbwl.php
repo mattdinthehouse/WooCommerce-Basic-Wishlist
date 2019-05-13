@@ -30,8 +30,6 @@ class WCBWL {
 	}
 
 	private function hooks() {
-		register_activation_hook(WCBWL_FILE, array('WCBWL_Setup', 'install'));
-
 		add_action('init', array('WCBWL_Setup', 'register_post_types'), 5);
 		add_action('init', array('WCBWL_Setup', 'register_post_status'), 9);
 		add_action('init', array('WCBWL_Shortcodes', 'init'), 10);
@@ -42,6 +40,11 @@ class WCBWL {
 		add_filter('woocommerce_data_stores', array($this, 'register_data_stores'), 10, 1);
 
 		add_action('wp_login', array($this, 'update_wishlist_from_session'), 10, 2);
+	}
+
+	public static function install() {
+		require_once WCBWL_DIR.'/includes/class-wcbwl-setup.php';
+		WCBWL_Setup::install();
 	}
 
 	public function register_data_stores($data_stores) {
