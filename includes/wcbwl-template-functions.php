@@ -95,7 +95,7 @@ if(!function_exists('wcbwl_get_formatted_wishlist_item_data')) {
 	function wcbwl_get_formatted_wishlist_item_data($wishlist_item, $flat = false) {
 		$item_data = array();
 
-		$product = wc_get_product($product_id);
+		$product = wc_get_product($wishlist_item->get_product_id());
 
 		foreach($wishlist_item->get_meta_data() as $meta) {
 			$label = $meta->key;
