@@ -14,7 +14,7 @@ if(!function_exists('wcbwl_template_loop_save_to_wishlist')) {
 					array(
 						'button',
 						'save_to_wishlist_button',
-						//$product->supports('ajax_add_to_cart') && $product->is_purchasable() && $product->is_in_stock() ? 'ajax_add_to_cart' : '',
+						('yes' === get_option('woocommerce_enable_ajax_add_to_cart')) ? 'ajax_save_to_wishlist' : '',
 					)
 				)
 			),

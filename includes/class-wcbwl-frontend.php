@@ -10,6 +10,8 @@ class WCBWL_Frontend {
 
 		add_action('after_setup_theme', array($this, 'include_template_functions'), 12);
 
+		add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
+
 		add_action('pre_get_posts', array($this, 'route_wishlist_post_to_page'), 10, 1);
 
 		add_action('woocommerce_after_shop_loop_item', 'wcbwl_template_loop_save_to_wishlist', 10);
@@ -39,6 +41,19 @@ class WCBWL_Frontend {
 
 	public function include_template_functions() {
 		require_once WCBWL_DIR.'/includes/wcbwl-template-functions.php';
+	}
+
+	public function enqueue_scripts() {
+		if('yes' === get_option('woocommerce_enable_ajax_add_to_cart')) {
+			wp_register_script('wcbwl-save-to-wishlist', WCBWL_URL.'/assets/js/save-to-wishlist.js', array('jquery'), WCBWL_VERSION, true);
+			wp_enqueue_script('wcbwl-save-to-wishlist');
+			wp_localize_script('wcbwl-save-to-wishlist', 'wcbwl_save_to_wishlist_params', apply_filters('wcbwl_save_to_wishlist_params', array(
+				'ajax_url'           => WC()->ajax_url(),
+				'wc_ajax_url'        => WC_AJAX::get_endpoint('%%endpoint%%'),
+				'i18n_view_wishlist' => esc_attr__('View wishlist', 'wcbwl'),
+				'wishlist_url'       => apply_filters('wcbwl_save_to_wishlist_redirect', wc_get_page_permalink('wishlist'), null),
+			)));
+		}
 	}
 
 	public function route_wishlist_post_to_page($query) {
