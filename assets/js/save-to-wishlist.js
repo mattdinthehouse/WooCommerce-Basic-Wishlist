@@ -11,10 +11,9 @@ jQuery(function($) {
 	var SaveToWishlistHandler = function() {
 		$(document.body)
 			.on('click', '.save_to_wishlist_button', this.onSaveToWishlist)
-			//.on('click', '.remove_from_wishlist_button', this.onRemoveFromCart)
+			//.on('click', '.remove_from_wishlist_button', this.onRemoveFromWishlist)
 			.on('saved_to_wishlist', this.updateButton)
-			//.on('saved_to_wishlist', this.updateCartPage)
-			//.on('saved_to_wishlist removed_from_wishlist', this.updateFragments);
+			.on('saved_to_wishlist removed_from_wishlist', this.updateFragments);
 	};
 
 	/**
@@ -62,7 +61,7 @@ jQuery(function($) {
 	/**
 	 * Update fragments after remove from wishlist event in mini-wishlist.
 	 */
-	/*SaveToWishlistHandler.prototype.onRemoveFromCart = function(e) {
+	/*SaveToWishlistHandler.prototype.onRemoveFromWishlist = function(e) {
 		var $thisbutton = $(this),
 			$row        = $thisbutton.closest('.woocommerce-mini-wishlist-item');
 
@@ -108,24 +107,9 @@ jQuery(function($) {
 	};
 
 	/**
-	 * Update wishlist page elements after save to wishlist events.
-	 */
-	/*SaveToWishlistHandler.prototype.updateCartPage = function() {
-		var page = window.location.toString().replace('save-to-wishlist', 'saved-to-wishlist');
-
-		$.get(page, function(data) {
-			$('.shop_table.wishlist:eq(0)').replaceWith($(data).find('.shop_table.wishlist:eq(0)'));
-			$('.wishlist_totals:eq(0)').replaceWith($(data).find('.wishlist_totals:eq(0)'));
-			$('.wishlist_totals, .shop_table.wishlist').stop(true).css('opacity', '1').unblock();
-			$(document.body).trigger('wishlist_page_refreshed');
-			$(document.body).trigger('wishlist_totals_refreshed');
-		});
-	};*/
-
-	/**
 	 * Update fragments after save to wishlist events.
 	 */
-	/*SaveToWishlistHandler.prototype.updateFragments = function(e, fragments) {
+	SaveToWishlistHandler.prototype.updateFragments = function(e, fragments) {
 		if(fragments) {
 			$.each(fragments, function(key) {
 				$(key)
@@ -146,7 +130,7 @@ jQuery(function($) {
 
 			$(document.body).trigger('wc_fragments_loaded');
 		}
-	};*/
+	};
 
 	/**
 	 * Init SaveToWishlistHandler.
