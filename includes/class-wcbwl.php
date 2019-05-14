@@ -70,11 +70,13 @@ class WCBWL {
 			$item->update_meta_data($key, $value);
 		}
 
-		$item->save();
-
 		do_action('wcbwl_save_to_wishlist', $item, $product_id, $wishlist, $item_data);
 
-		$wishlist->add_item($item);
+		$was_added = $wishlist->add_item($item);
+
+		if(is_wp_error($was_added)) {
+			return $was_added;
+		}
 
 		$wishlist->save();
 		

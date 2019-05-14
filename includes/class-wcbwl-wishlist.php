@@ -274,6 +274,10 @@ class WCBWL_Wishlist extends WC_Data {
 		return empty($this->get_items());
 	}
 
+	public function get_item_count() {
+		return count($this->get_items());
+	}
+
 	public static function populate_defaults($wishlist = null, $user_id = 0) {
 		$wishlist = ($wishlist ? $wishlist : new self());
 
