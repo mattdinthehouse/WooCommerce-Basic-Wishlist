@@ -10,16 +10,17 @@ jQuery(function($) {
 	 */
 	var SaveToWishlistHandler = function() {
 		$(document.body)
-			.on('click', '.save_to_wishlist_button', this.onSaveToWishlist)
+			.on('click', '.save_to_wishlist_button', this.triggerSaveToWishlist)
 			//.on('click', '.remove_from_wishlist_button', this.onRemoveFromWishlist)
+			.on('save_to_wishlist', this.onSaveToWishlist)
 			.on('saved_to_wishlist', this.updateButton)
 			.on('saved_to_wishlist removed_from_wishlist', this.updateFragments);
 	};
 
 	/**
-	 * Handle the save to wishlist event.
+	 * Trigger a save to wishlist event via a click.
 	 */
-	SaveToWishlistHandler.prototype.onSaveToWishlist = function(e) {
+	SaveToWishlistHandler.prototype.triggerSaveToWishlist = function(e) {
 		var $thisbutton = $(this);
 
 		if($thisbutton.is('.ajax_save_to_wishlist')) {
@@ -39,23 +40,31 @@ jQuery(function($) {
 			});
 
 			// Trigger event.
-			$(document.body).trigger('saving_to_wishlist', [$thisbutton, data]);
-
-			// Ajax action.
-			$.post(wcbwl_save_to_wishlist_params.wc_ajax_url.toString().replace('%%endpoint%%', 'save_to_wishlist'), data, function(response) {
-				if(!response) {
-					return;
-				}
-
-				if(response.error && response.product_url) {
-					window.location = response.product_url;
-					return;
-				}
-
-				// Trigger event so themes can refresh other areas.
-				$(document.body).trigger('saved_to_wishlist', [response.fragments, $thisbutton]);
-			});
+			$(document.body).trigger('save_to_wishlist', [$thisbutton, data]);
 		}
+	};
+
+	/**
+	 * Handle the save to wishlist event.
+	 */
+	SaveToWishlistHandler.prototype.onSaveToWishlist = function(e, $button, data) {
+		// Trigger event.
+		$(document.body).trigger('saving_to_wishlist', [$button, data]);
+
+		// Ajax action.
+		$.post(wcbwl_save_to_wishlist_params.wc_ajax_url.toString().replace('%%endpoint%%', 'save_to_wishlist'), data, function(response) {
+			if(!response) {
+				return;
+			}
+
+			if(response.error && response.product_url) {
+				window.location = response.product_url;
+				return;
+			}
+
+			// Trigger event so themes can refresh other areas.
+			$(document.body).trigger('saved_to_wishlist', [response.fragments, $button]);
+		});
 	};
 
 	/**
