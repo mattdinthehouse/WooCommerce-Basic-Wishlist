@@ -7,6 +7,7 @@ class WCBWL_Form_Handler {
 
 	public static function init() {
 		add_action('wp_loaded', array(__CLASS__, 'save_to_wishlist_action'), 20);
+		add_action('wp_loaded', array(__CLASS__, 'update_wishlist_items_action'), 20);
 
 		add_filter('woocommerce_add_to_cart_product_id', array(__CLASS__, 'stop_variable_add_to_cart'), 10, 1);
 
@@ -46,6 +47,29 @@ class WCBWL_Form_Handler {
 				exit;
 			}
 		}
+	}
+
+	public static function update_wishlist_items_action() {
+		if(!isset($_REQUEST['update_wishlist_items']) || !is_numeric(wp_unslash($_REQUEST['update_wishlist_items']))) {
+			return;
+		}
+
+		wc_nocache_headers();
+
+		$wishlist_id = apply_filters('wcbwl_update_wishlist_items_wishlist_id', absint(wp_unslash($_REQUEST['update_wishlist_items'])));
+		$wishlist    = new WCBWL_Wishlist($wishlist_id);
+
+		foreach($wishlist->get_items() as $item) {
+			if(isset($_REQUEST['wishlist_item'][$item->get_id()]) && is_array($_REQUEST['wishlist_item'][$item->get_id()])) {
+				foreach($_REQUEST['wishlist_item'][$item->get_id()] as $key => $value) {
+					$item->update_meta_data($key, $value);
+				}
+
+				$item->save();
+			}
+		}
+
+		wc_add_notice(__('Wishlist updated.', 'wcbwl'));
 	}
 
 	public static function stop_variable_add_to_cart($product_id) {
