@@ -29,6 +29,8 @@ class WCBWL_Frontend {
 
 		add_action('wcbwl_wishlist_is_empty', 'wcbwl_empty_wishlist_message', 10);
 		add_action('wcbwl_wishlist_is_empty', 'woocommerce_output_all_notices', 5);
+
+		add_action('wcbwl_before_wishlist', 'woocommerce_output_all_notices', 5);
 	}
 
 	public function locate_template($template, $template_name, $template_path) {

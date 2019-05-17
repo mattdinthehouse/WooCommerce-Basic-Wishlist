@@ -138,6 +138,9 @@ jQuery(function($) {
 			});
 
 			$(document.body).trigger('wc_fragments_loaded');
+
+			// added_to_cart event code from woocommerce/assets/js/frontend/cart-fragments.js 
+			sessionStorage.setItem(wc_cart_fragments_params.fragment_name, JSON.stringify(fragments));
 		}
 	};
 
