@@ -16,6 +16,8 @@ class WCBWL_Frontend {
 
 		add_filter('page_link', array($this, 'rewrite_wishlist_permalink'), 10, 2);
 
+		add_filter('body_class', array($this, 'body_class'), 10, 1);
+
 		add_action('woocommerce_after_shop_loop_item', 'wcbwl_template_loop_save_to_wishlist', 10);
 
 		add_action('woocommerce_after_add_to_cart_button', 'wcbwl_template_single_save_to_wishlist', 10);
@@ -84,5 +86,16 @@ class WCBWL_Frontend {
 		}
 
 		return $link;
+	}
+
+	public function body_class($classes) {
+		$classes = (array) $classes;
+
+		if(is_wishlist()) {
+			$classes[] = 'woocommerce-wishlist';
+			$classes[] = 'woocommerce-page';
+		}
+
+		return array_unique($classes);
 	}
 }

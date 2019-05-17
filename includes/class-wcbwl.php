@@ -15,6 +15,7 @@ class WCBWL {
 	private function includes() {
 		require_once WCBWL_DIR.'/includes/class-wcbwl-admin.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-ajax.php';
+		require_once WCBWL_DIR.'/includes/wcbwl-conditional-functions.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-form-handler.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-frontend.php';
 		require_once WCBWL_DIR.'/includes/class-wcbwl-setup.php';
