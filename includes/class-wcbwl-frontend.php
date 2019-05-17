@@ -14,6 +14,8 @@ class WCBWL_Frontend {
 
 		add_action('pre_get_posts', array($this, 'route_wishlist_post_to_page'), 10, 1);
 
+		add_filter('page_link', array($this, 'rewrite_wishlist_permalink'), 10, 2);
+
 		add_action('woocommerce_after_shop_loop_item', 'wcbwl_template_loop_save_to_wishlist', 10);
 
 		add_action('woocommerce_after_add_to_cart_button', 'wcbwl_template_single_save_to_wishlist', 10);
@@ -62,5 +64,25 @@ class WCBWL_Frontend {
 			$query->set('p', wc_get_page_id('wishlist'));
 			$query->set('name', '');
 		}
+	}
+
+	public function rewrite_wishlist_permalink($link, $post_id) {
+		if(!is_admin() || (defined('DOING_AJAX') && DOING_AJAX)) {
+			if($post_id == wc_get_page_id('wishlist')) {
+				$wishlist_key = get_query_var('wishlist');
+				if($wishlist_key) {
+					$wishlist = WCBWL_Wishlist::get_using_key($wishlist_key);
+				}
+				else {
+					$wishlist = WC()->wishlist->get_wishlist_from_current_user();
+				}
+
+				if($wishlist->get_id()) {
+					$link = get_permalink($wishlist->get_id());
+				}
+			}
+		}
+
+		return $link;
 	}
 }
