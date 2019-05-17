@@ -67,6 +67,8 @@ class WCBWL_Frontend {
 			$query->set('post_type', 'page');
 			$query->set('p', wc_get_page_id('wishlist'));
 			$query->set('name', '');
+			$query->is_single = false;
+			$query->is_page = true;
 		}
 	}
 
