@@ -57,15 +57,21 @@ class WCBWL_Form_Handler {
 
 		wc_nocache_headers();
 
-		$item_id          = apply_filters('wcbwl_remove_wishlist_item_item_id', absint(wp_unslash($_REQUEST['remove-wishlist-item'])));
-		$wishlist_item    = new WCBWL_Wishlist_Item($item_id);
-		$current_wishlist = WC()->wishlist->get_wishlist_from_current_user();
+		$item_id = apply_filters('wcbwl_remove_wishlist_item_item_id', absint(wp_unslash($_REQUEST['remove-wishlist-item'])));
 
-		if($current_wishlist->get_id() && $current_wishlist->get_id() == $wishlist_item->get_wishlist_id()) {
-			$wishlist_item->delete();
+		try {
+			$wishlist_item    = new WCBWL_Wishlist_Item($item_id);
+			$current_wishlist = WC()->wishlist->get_wishlist_from_current_user();
+
+			if($wishlist_item->get_id() && $current_wishlist->get_id() && $current_wishlist->get_id() == $wishlist_item->get_wishlist_id()) {
+				$wishlist_item->delete();
+			}
+
+			wc_add_notice(__('Item deleted.', 'wcbwl'));
 		}
-
-		wc_add_notice(__('Item deleted.', 'wcbwl'));
+		catch(Exception $e) {
+			wc_add_notice(sprintf(__('An error occurred deleting that item: %s', 'wcbwl'), $e->getMessage()), 'error');
+		}
 	}
 
 	public static function update_wishlist_items_action() {
