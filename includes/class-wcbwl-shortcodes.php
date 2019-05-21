@@ -35,8 +35,17 @@ class WCBWL_Shortcodes {
 			$wishlist = new WCBWL_Wishlist();
 		}
 
+		$is_user_owner = false;
+		if(is_user_logged_in()) {
+			$is_user_owner = ($wishlist->get_customer_id() == get_current_user_id());
+		}
+		else {
+			$is_user_owner = ($wishlist->get_id() == WC()->wishlist->get_wishlist_from_session()->get_id());
+		}
+
 		$args = array(
-			'wishlist' => $wishlist,
+			'wishlist'      => $wishlist,
+			'is_user_owner' => $is_user_owner,
 		);
 
 		if($wishlist->is_empty()) {

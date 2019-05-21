@@ -37,12 +37,17 @@ do_action('wcbwl_before_wishlist');
 
 						<td class="product-remove">
 							<?php
-								echo apply_filters('wcbwl_wishlist_item_remove_link', sprintf(
-									'<a href="%s" class="remove" data-item_id="%s" aria-label="%s">&times;</a>',
-									esc_url(add_query_arg('remove-wishlist-item', $wishlist_item->get_id())),
-									esc_attr($wishlist_item->get_id()),
-									__('Remove this item', 'wcbwl')
-								), $wishlist_item);
+								if($is_user_owner) {
+									echo apply_filters('wcbwl_wishlist_item_remove_link', sprintf(
+										'<a href="%s" class="remove" data-item_id="%s" aria-label="%s">&times;</a>',
+										esc_url(add_query_arg('remove-wishlist-item', $wishlist_item->get_id())),
+										esc_attr($wishlist_item->get_id()),
+										__('Remove this item', 'wcbwl')
+									), $wishlist_item);
+								}
+								else {
+									print '&nbsp;';
+								}
 							?>
 						</td>
 
