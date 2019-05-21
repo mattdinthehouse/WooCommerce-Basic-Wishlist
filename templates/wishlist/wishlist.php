@@ -33,13 +33,14 @@ do_action('wcbwl_before_wishlist');
 					$product_permalink = apply_filters('wcbwl_wishlist_item_permalink', get_permalink($product_id), $wishlist_item);
 					
 					?>
-					<tr class="<?php echo esc_attr(apply_filters('wcbwl_wishlist_item_class', 'cart_item', $wishlist_item)); ?>">
+					<tr class="<?php echo esc_attr(apply_filters('wcbwl_wishlist_item_class', 'wishlist_item cart_item', $wishlist_item)); ?>">
 
 						<td class="product-remove">
 							<?php
 								echo apply_filters('wcbwl_wishlist_item_remove_link', sprintf(
-									'<a href="%s" class="remove" aria-label="%s">&times;</a>',
+									'<a href="%s" class="remove" data-item_id="%s" aria-label="%s">&times;</a>',
 									esc_url(add_query_arg('remove-wishlist-item', $wishlist_item->get_id())),
+									esc_attr($wishlist_item->get_id()),
 									__('Remove this item', 'wcbwl')
 								), $wishlist_item);
 							?>

@@ -11,7 +11,7 @@ jQuery(function($) {
 	var SaveToWishlistHandler = function() {
 		$(document.body)
 			.on('click', '.save_to_wishlist_button', this.triggerSaveToWishlist)
-			//.on('click', '.remove_from_wishlist_button', this.onRemoveFromWishlist)
+			.on('click', '.wishlist .product-remove > a', this.onRemoveFromWishlist)
 			.on('save_to_wishlist', this.onSaveToWishlist)
 			.on('saved_to_wishlist', this.updateButton)
 			.on('saved_to_wishlist removed_from_wishlist', this.updateFragments);
@@ -69,31 +69,35 @@ jQuery(function($) {
 
 	/**
 	 * Update fragments after remove from wishlist event in mini-wishlist.
+	 * Code from woocommerce/assets/js/cart.js
 	 */
-	/*SaveToWishlistHandler.prototype.onRemoveFromWishlist = function(e) {
-		var $thisbutton = $(this),
-			$row        = $thisbutton.closest('.woocommerce-mini-wishlist-item');
-
+	SaveToWishlistHandler.prototype.onRemoveFromWishlist = function(e) {
 		e.preventDefault();
 
-		$row.block({
+		var $a = $(e.currentTarget);
+		var $wishlist = $a.parents('.wishlist');
+
+		$wishlist.addClass('processing').block({
 			message: null,
 			overlayCSS: {
+				background: '#fff',
 				opacity: 0.6
 			}
 		});
 
-		$.post(wcbwl_save_to_wishlist_params.wc_ajax_url.toString().replace('%%endpoint%%', 'remove_from_wishlist'), { wishlist_item_key : $thisbutton.data('wishlist_item_key') }, function(response) {
-			if(!response || !response.fragments) {
-				window.location = $thisbutton.attr('href');
-				return;
+		$.ajax( {
+			type:     'GET',
+			url:      $a.attr('href'),
+			dataType: 'html',
+			success:  function(response) {
+				update_wc_div(response);
+			},
+			complete: function() {
+				$wishlist.removeClass('processing').unblock();
+				$.scroll_to_notices($('[role="alert"]'));
 			}
-			$(document.body).trigger('removed_from_wishlist', [response.fragments, $thisbutton]);
-		}).fail(function() {
-			window.location = $thisbutton.attr('href');
-			return;
-		});
-	};*/
+		} );
+	};
 
 	/**
 	 * Update wishlist page elements after save to wishlist events.
@@ -142,6 +146,77 @@ jQuery(function($) {
 			// added_to_cart event code from woocommerce/assets/js/frontend/cart-fragments.js 
 			sessionStorage.setItem(wc_cart_fragments_params.fragment_name, JSON.stringify(fragments));
 		}
+	};
+
+	/**
+	 * Update the .woocommerce div with a string of html.
+	 * Code from woocommerce/assets/js/cart.js
+	 *
+	 * @param {String} html_str The HTML string with which to replace the div.
+	 * @param {bool} preserve_notices Should notices be kept? False by default.
+	 */
+	var update_wc_div = function(html_str, preserve_notices) {
+		var $html         = $.parseHTML(html_str);
+		var $new_wishlist = $('.wishlist', $html);
+		var $notices      = $('.woocommerce-error, .woocommerce-message, .woocommerce-info', $html);
+
+		// No form, cannot do this.
+		if($('.wishlist').length === 0) {
+			window.location.reload();
+			return;
+		}
+
+		// Remove errors
+		if(!preserve_notices) {
+			$('.woocommerce-error, .woocommerce-message, .woocommerce-info').remove();
+		}
+
+		if($new_wishlist.length === 0) {
+			// If the checkout is also displayed on this page, trigger reload instead.
+			if($('.woocommerce-checkout').length) {
+				window.location.reload();
+				return;
+			}
+
+			// No items to display now! Replace all wishlist content.
+			var $wishlist_html = $('.wishlist-empty', $html).closest('.woocommerce');
+			$('.wishlist').closest('.woocommerce').replaceWith($wishlist_html);
+
+			// Display errors
+			if($notices.length > 0) {
+				show_notice($notices);
+			}
+
+			// Notify plugins that the wishlist was emptied.
+			$(document.body ).trigger('wcbwl_wishlist_emptied');
+		}
+		else {
+			// If the checkout is also displayed on this page, trigger update event.
+			if($('.woocommerce-checkout').length) {
+				$(document.body).trigger('update_checkout');
+			}
+
+			$('.wishlist').replaceWith($new_wishlist);
+
+			if($notices.length > 0) {
+				show_notice($notices);
+			}
+		}
+
+		$(document.body).trigger('wc_fragment_refresh');
+	};
+
+	/**
+	 * Shows new notices on the page.
+	 * Code from woocommerce/assets/js/cart.js
+	 *
+	 * @param {Object} The Notice HTML Element in string or object form.
+	 */
+	var show_notice = function(html_element, $target) {
+		if(!$target) {
+			$target = $('.woocommerce-notices-wrapper:first') || $('.wishlist-empty').closest('.woocommerce') || $('.wishlist');
+		}
+		$target.prepend(html_element);
 	};
 
 	/**
