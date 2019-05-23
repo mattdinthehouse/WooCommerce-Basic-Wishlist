@@ -116,11 +116,6 @@ if(!function_exists('wcbwl_get_formatted_wishlist_item_data')) {
 				$label = wc_attribute_label(str_replace('attribute_', '', $label), $product);
 			}
 
-			// Check the nicename against the title.
-			if('' === $value || wc_is_attribute_in_product_name($value, get_the_title($wishlist_item->get_id()))) {
-				continue;
-			}
-
 			$item_data[] = array(
 				'key'   => $label,
 				'value' => $value,
@@ -128,7 +123,7 @@ if(!function_exists('wcbwl_get_formatted_wishlist_item_data')) {
 		}
 
 		// Filter item data to allow 3rd parties to add more to the array.
-		$item_data = apply_filters('woocommerce_get_item_data', $item_data, $wishlist_item);
+		$item_data = apply_filters('wcbwl_get_item_data', $item_data, $wishlist_item);
 
 		// Format item data ready to display.
 		foreach($item_data as $key => $data) {
@@ -138,7 +133,7 @@ if(!function_exists('wcbwl_get_formatted_wishlist_item_data')) {
 				continue;
 			}
 			$item_data[$key]['key']     = !empty($data['key']) ? $data['key'] : $data['name'];
-			$item_data[$key]['display'] = !empty($data['display']) ? $data['display'] : $data['value'];
+			$item_data[$key]['display'] = !empty($data['display']) ? $data['display'] : (string) $data['value'];
 		}
 
 		// Output flat or in list format.
