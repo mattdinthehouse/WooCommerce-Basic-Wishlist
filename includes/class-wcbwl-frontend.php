@@ -63,12 +63,14 @@ class WCBWL_Frontend {
 	}
 
 	public function route_wishlist_post_to_page($query) {
-		if($query->is_main_query() && $query->get('post_type') == 'wishlist') {
-			$query->set('post_type', 'page');
-			$query->set('p', wc_get_page_id('wishlist'));
-			$query->set('name', '');
-			$query->is_single = false;
-			$query->is_page = true;
+		if(!is_admin() || (defined('DOING_AJAX') && DOING_AJAX)) {
+			if($query->is_main_query() && $query->get('post_type') == 'wishlist') {
+				$query->set('post_type', 'page');
+				$query->set('p', wc_get_page_id('wishlist'));
+				$query->set('name', '');
+				$query->is_single = false;
+				$query->is_page = true;
+			}
 		}
 	}
 
