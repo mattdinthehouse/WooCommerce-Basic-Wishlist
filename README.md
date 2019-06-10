@@ -1,6 +1,6 @@
 # WooCommerce Basic Wishlist
-Wishlist plugin for WooCommerce
+Like the WooCommerce cart except a wishlist with sharing and guest user support.
 
 ## Features
-* Guest wishlists (with auto-delete)
+* Guest wishlists
 * Sharing (via unique permalinks)
