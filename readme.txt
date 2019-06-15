@@ -24,7 +24,7 @@ Make sure that WooCommerce is active and it's a recent version.
 
 = Can I customize the wishlist page? =
 
-Yes. This plugin uses the same template override mechanism as normal WooCommerce so you can copy-paste template files from the plugins templates/ folder into your theme's woocommerce/ folder.
+Yes. This plugin uses the same template override mechanism as normal WooCommerce so you can copy-paste template files from the plugin's templates/ folder into your theme's woocommerce/ folder.
 
 = Wishlist page doesn't show or returns a 404 error? =
 
