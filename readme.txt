@@ -1,8 +1,8 @@
 === WooCommerce Basic Wishlist ===
 Contributors: mattdwyercool
 Tags: woocommerce, wishlist
-Requires at least: 4.6
-Tested up to: 5.1.1
+Requires at least: 5.2
+Tested up to: 5.2.1
 Stable tag: trunk
 Requires PHP: 5.6
 License: MIT
@@ -17,6 +17,10 @@ Like the WooCommerce cart except a wishlist with sharing and guest user support.
 3. Activate the plugin
 
 == Frequently Asked Questions ==
+
+= I activated the plugin and nothing happens? =
+
+Make sure that WooCommerce is active and it's a recent version.
 
 = Can I customize the wishlist page? =
 

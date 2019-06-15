@@ -150,7 +150,11 @@ class WCBWL_Wishlist_Data_Store_CPT extends WC_Data_Store_WP implements WC_Objec
 			$value = $wishlist->{"get_$prop"}('edit');
 			$value = is_string($value) ? wp_slash($value) : $value;
 
-			$updated = $this->update_or_delete_post_meta($wishlist, $meta_key, $value);
+			switch($prop) {
+				default:
+					$updated = update_post_meta($wishlist, $meta_key, $value);
+					break;
+			}
 
 			if($updated) {
 				$updated_props[] = $prop;

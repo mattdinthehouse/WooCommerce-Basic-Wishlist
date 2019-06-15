@@ -10,6 +10,10 @@ class WCBWL_Setup {
 	}
 
 	public static function install() {
+		if(!wcbwl_can_run()) {
+			die(__('This site does not meet minimum requirements', 'wcbwl'));
+		}
+
 		self::create_tables();
 
 		self::register_post_types();
