@@ -5,7 +5,7 @@
  * Description: Wishlist plugin for WooCommerce - guest wishlists, sharing
  * Author: https://MattDwyer.cool
  * Author URI: https://mattdwyer.cool
- * Version: 0.1
+ * Version: 1.0
  * License: GPL2
  * Text Domain: wcbwl
  * WC requires at least: 3.5.0
@@ -20,7 +20,7 @@ define('WCBWL_FILE', __FILE__);
 define('WCBWL_DIR',  dirname(WCBWL_FILE));
 define('WCBWL_URL',  plugins_url('', WCBWL_FILE));
 
-define('WCBWL_VERSION', '0.1');
+define('WCBWL_VERSION', '1.0');
 define('WCBWL_MIN_WC_VERSION', '3.5.0');
 
 require_once WCBWL_DIR.'/includes/class-wcbwl.php';

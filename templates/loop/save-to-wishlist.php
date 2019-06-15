@@ -5,7 +5,7 @@
  * This template can be overridden by copying it to yourtheme/woocommerce/loop/save-to-wishlist.php.
  *
  * @see 	    https://docs.woocommerce.com/document/template-structure/
- * @version     0.1
+ * @version     1.0
  */
 
 if(!defined('ABSPATH')) {

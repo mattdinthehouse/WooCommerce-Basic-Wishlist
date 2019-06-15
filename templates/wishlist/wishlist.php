@@ -2,7 +2,7 @@
 /**
  * Wishlist Page
  *
- * @version 0.1
+ * @version 1.0
  */
 
 if(!defined('ABSPATH')) {

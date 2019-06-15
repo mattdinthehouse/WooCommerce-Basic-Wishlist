@@ -32,5 +32,8 @@ Make sure you have a wishlist page set under WooCommerce > Settings > Advanced. 
 
 == Changelog ==
 
+= 1.0 =
+* First release of the plugin. Uploaded to WP plugin repo!
+
 = 0.1 =
 * Initial version of the plugin. Works fine in all my testing.
