@@ -59,7 +59,7 @@ CREATE TABLE {$wpdb->prefix}woocommerce_wishlist_itemmeta (
 	}
 
 	public static function create_pages() {
-		include_once dirname(WC_PLUGIN_FILE).'/admin/wc-admin-functions.php';
+		include_once dirname(WC_PLUGIN_FILE).'/includes/admin/wc-admin-functions.php';
 
 		$pages = array(
 			'wishlist' => array(
