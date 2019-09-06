@@ -128,7 +128,11 @@ class WCBWL {
 	}
 
 	public function get_wishlist_from_session() {
-		$wishlist_id = WC()->session->get('wishlist', 0);
+		$wishlist_id = 0;
+
+		if(!empty(WC()->session)) {
+			$wishlist_id = WC()->session->get('wishlist', 0);
+		}
 
 		return new WCBWL_Wishlist($wishlist_id);
 	}
