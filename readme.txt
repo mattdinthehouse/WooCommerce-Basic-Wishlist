@@ -2,7 +2,7 @@
 Contributors: mattdwyercool
 Tags: woocommerce, wishlist
 Requires at least: 5.2
-Tested up to: 5.1.1
+Tested up to: 5.3
 Stable tag: trunk
 Requires PHP: 5.6
 License: MIT

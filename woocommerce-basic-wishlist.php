@@ -9,7 +9,7 @@
  * License: GPL2
  * Text Domain: wcbwl
  * WC requires at least: 3.5.0
- * WC tested up to: 3.6.2
+ * WC tested up to: 3.8.0
  *
  */
 
